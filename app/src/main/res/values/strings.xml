@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Lets Compose</string>
+    <string name="title_activity_survey">SurveyActivity</string>
+    <string name="title_activity_codelab_basics">CodelabBasicsActivity</string>
+    <string name="greetings">Greetings</string>
+    <string name="show_less">Show less</string>
+    <string name="show_more">Show more</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
