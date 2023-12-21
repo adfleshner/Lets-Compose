@@ -5,6 +5,25 @@
     <string name="greetings">Greetings</string>
     <string name="show_less">Show less</string>
     <string name="show_more">Show more</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_true_main2">TrueMainActivity</string>
+    <string name="author">Author: %s</string>
+    <string name="title_activity_soothe">SootheActivity</string>
+
+    <string name="placeholder_search">Search the mood</string>
+    <string name="itsme">It\'s Me!</string>
+    <string name="bottom_navigation_home">Home</string>
+    <string name="bottom_navigation_settings">Settings</string>
+    <string name="title_activity_states">StatesActivity</string>
+    <string name="glasses_count_zero">You have\'nt had any glasses.</string>
+    <plurals name="glasses_count">
+        <item quantity="one">You\'ve had 1 glass</item>
+        <item quantity="other">You\'ve had %d glasses</item>
+        <item quantity="few">You\'ve had %d glasses</item>
+    </plurals>
+
+    <string name="add_one">Add one</string>
+    <string name="close">Close</string>
+    <string name="clear_water_count">Clear water count</string>
+    <string name="wellness_walk_task">\"Have you taken your 15 minute walk today?\"</string>
+
 </resources>

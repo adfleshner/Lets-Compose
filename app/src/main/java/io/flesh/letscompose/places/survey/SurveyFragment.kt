@@ -1,4 +1,4 @@
-package io.flesh.letscompose
+package io.flesh.letscompose.places.survey
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,7 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.flesh.letscompose.composables.SurveyAnswer
+import io.flesh.letscompose.utils.ComposableFragment
+import io.flesh.letscompose.places.survey.composables.SurveyAnswer
 import io.flesh.letscompose.models.Answer
 import io.flesh.letscompose.sampledata.SampleData
 import io.flesh.letscompose.ui.theme.SurveyTheme

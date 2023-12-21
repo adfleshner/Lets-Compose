@@ -1,4 +1,4 @@
-package io.flesh.letscompose.composables
+package io.flesh.letscompose.places.survey.composables
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

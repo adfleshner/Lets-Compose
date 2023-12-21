@@ -1,4 +1,4 @@
-package io.flesh.letscompose
+package io.flesh.letscompose.utils
 
 import androidx.fragment.app.Fragment
 import android.os.Bundle

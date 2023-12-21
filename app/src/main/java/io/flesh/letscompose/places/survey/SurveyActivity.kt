@@ -1,4 +1,4 @@
-package io.flesh.letscompose
+package io.flesh.letscompose.places.survey
 
 import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -26,9 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.flesh.letscompose.composables.SurveyAnswer
+import io.flesh.letscompose.places.survey.composables.SurveyAnswer
 import io.flesh.letscompose.models.Answer
 import io.flesh.letscompose.sampledata.SampleData
+import io.flesh.letscompose.utils.toast
 import io.flesh.letscompose.ui.theme.LetsComposeTheme
 
 class SurveyActivity : ComponentActivity() {

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="water_counter_padding">16dp</dimen>
+    <dimen name="water_counter_button_padding">8dp</dimen>
+    <dimen name="wellness_text_start_padding">16dp</dimen>
+    <dimen name="water_counter_top_button_padding">8dp</dimen>
+</resources>

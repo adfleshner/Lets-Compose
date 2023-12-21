@@ -1,10 +1,28 @@
 package io.flesh.letscompose.sampledata
 
+import io.flesh.letscompose.places.Conversation.ConversationActivity
+import io.flesh.letscompose.places.codelabbasics.CodelabBasicsActivity
+import io.flesh.letscompose.models.LetsComposePlaces
 import io.flesh.letscompose.R
+import io.flesh.letscompose.models.AlignItem
 import io.flesh.letscompose.models.Answer
 import io.flesh.letscompose.models.Message
+import io.flesh.letscompose.models.WellnessTask
+import io.flesh.letscompose.places.soothe.SootheActivity
+import io.flesh.letscompose.places.states.StatesActivity
+import io.flesh.letscompose.places.survey.SurveyActivity
 
 object SampleData {
+
+    val favorites: List<AlignItem> = listOf(
+        AlignItem(R.drawable.itsme, R.string.itsme),
+        AlignItem(R.drawable.itsme, R.string.itsme),
+        AlignItem(R.drawable.itsme, R.string.itsme),
+        AlignItem(R.drawable.itsme, R.string.itsme),
+        AlignItem(R.drawable.itsme, R.string.itsme),
+        AlignItem(R.drawable.itsme, R.string.itsme)
+    )
+
 
     val smallListOfGreetings: List<String> get() = listOf("World","Compose","Android")
     val largeListOfGreetings: List<String> get() = List(1_000) { "Android $it" }
@@ -28,5 +46,25 @@ object SampleData {
         Answer(image = R.drawable.profile_picture,text =  "Question 3"),
         Answer(image = R.drawable.potato_picture,text =  "Question 4")
     )
+
+
+    val letComposeList get() = listOf(
+        LetsComposePlaces("Conversation", destination = ConversationActivity::class.java),
+        LetsComposePlaces("CodeLabsBasics", destination = CodelabBasicsActivity::class.java),
+        LetsComposePlaces("Survey", destination = SurveyActivity::class.java),
+        LetsComposePlaces("Soothe", destination = SootheActivity::class.java),
+        LetsComposePlaces("States", destination = StatesActivity::class.java),
+
+    )
+
+    val wellnessTasks get() = mutableListOf<WellnessTask>(
+        WellnessTask(1 , "Did you compose today?"),
+        WellnessTask(2 , "Did you practice spanish today?")
+    ).also {list ->
+        repeat(60){
+            val newId = it+3
+            list.add(WellnessTask(newId, "Task # $newId"))
+        }
+    }
 
 }

@@ -1,4 +1,4 @@
-package io.flesh.letscompose
+package io.flesh.letscompose.utils
 
 import android.content.Context
 import android.widget.Toast

@@ -1,193 +1,157 @@
 package io.flesh.letscompose
 
-import android.content.res.Configuration
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-// All three of these are needed for remember to fucking work........
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
-//
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import io.flesh.letscompose.models.Message
+import androidx.core.content.ContextCompat.startActivity
+import io.flesh.letscompose.utils.previewutils.WindowWidthSizeClassPreview
+import io.flesh.letscompose.utils.previewutils.WindowWidthSizePreviewParameterProvider
 import io.flesh.letscompose.sampledata.SampleData
 import io.flesh.letscompose.ui.theme.LetsComposeTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            FullScreen()
+            LetsComposeApp(windowSize = calculateWindowSizeClass(activity = this).widthSizeClass)
         }
     }
 }
 
-//region ================================Composables======================================//
+@Composable
+fun LetsComposeApp(windowSize: WindowWidthSizeClass) {
+    LetsComposeTheme {
+        // A surface container using the 'background' color from the theme
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            LetsComposePLaceList()
+        }
+    }
+}
+
 
 @Composable
-fun Conversation(messages: List<Message>) {
+fun LetsComposePLaceList(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
     LazyColumn {
-        // be sure to import the items from LazyListScope that can just take items otherwise you
-        // will be sitting there scratching your head wondering WTF is going on.
-        items(messages) { message ->
-            MessageCard(message = message)
+        items(SampleData.letComposeList) {
+            LetsCompostPlaceItem(name = it.title, expandedText = stringResource(id = R.string.author, it.author)) {
+                val destination = Intent(context, it.destination)
+                startActivity(context, destination, Bundle())
+            }
         }
     }
 }
 
 @Composable
-fun MessageCard(message: Message) {
-    // by remember unwraps the state to the value of the state and remembers is so that it is not
-    // recalculated every time it is recomposed.
-    // remember is one of those gotta import the right thing.
-    // I had to import it like 3 times for it to fucking work WTF!!
-    //====================================================================
-    // We keep track if the message is expanded or not in this variable
-    var isMessageExpanded: Boolean by remember { mutableStateOf(false) }
-    val surfaceColor: Color by animateColorAsState(
-        targetValue = if (isMessageExpanded) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.surface
-        },
-        label = ""
-    )
-
-    Row(modifier = Modifier.padding(all = 8.dp)) {
-        Image(
-            painter = painterResource(R.drawable.profile_picture),
-            contentDescription = "Contact profile picture",
+fun LetsCompostPlaceItem(
+    name: String,
+    expandedText: String = "Composem ipsum color sit lazy, padding theme elit, sed do bouncy. "
+        .repeat(4),
+    destination: () -> Unit = {}
+) {
+    var isExpanded: Boolean by remember { mutableStateOf(false) }
+    Surface(
+        shape = RoundedCornerShape(4.dp),
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .clickable { destination.invoke() }
+    ) {
+        Row(
             modifier = Modifier
-                .size(size = 40.dp)
-                .clip(shape = CircleShape)
-                .border(
-                    width = 1.5.dp,
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = CircleShape
+                .padding(12.dp)
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
+                    )
                 )
-        )
-        // add a spacer here instead of trying to add padding to the end of the image or to the
-        // beginning of the Column. So that no goofy shit happens.
-        Spacer(modifier = Modifier.width(8.dp))
-        Column(modifier = Modifier.clickable {
-            // what to do when the column is clicked.
-            // this toggles the state.
-            isMessageExpanded = !isMessageExpanded
-        }) {
-            Text(
-                text = message.author,
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.titleSmall
-            )
-            // Same here instead of using padding of the other views just add a spacer. its cleaner
-            // will help when creating other composables.
-            // Add a vertical space between the author and message texts
-            Spacer(modifier = Modifier.height(4.dp))
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                shadowElevation = 1.dp,
-                color = surfaceColor,
+        ) {
+            Column(
                 modifier = Modifier
-                    .animateContentSize()
-                    .padding(all = 1.dp)
+                    .weight(1f)
+                    .padding(12.dp)
             ) {
                 Text(
-                    text = message.body,
-                    modifier = Modifier.padding(all = 4.dp),
-                    // If the message is expanded, we display all its content
-                    // otherwise we only display the first line
-                    maxLines = if (isMessageExpanded) {
-                        Int.MAX_VALUE // this could be a bad Idea Buuuuuuut its a tut so,
-                        // I'll leave it for now
+                    text = name,
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                )
+                if (isExpanded) {
+                    Text(
+                        text = expandedText,
+                    )
+                }
+            }
+            IconButton(
+                onClick = {
+                    isExpanded = !isExpanded
+                }) {
+                Icon(
+                    imageVector = if (isExpanded) {
+                        Icons.Filled.ExpandLess
                     } else {
-                        1
+                        Icons.Filled.ExpandMore
                     },
-                    style = MaterialTheme.typography.bodyMedium
+                    contentDescription = if (isExpanded) {
+                        stringResource(R.string.show_less)
+                    } else {
+                        stringResource(R.string.show_more)
+                    }
                 )
             }
         }
     }
 }
 
-//endregion ================================Composables======================================//
-//region ================================Layout Building======================================//
-// Use for both Creating the app and Showing the preview? Is this a good idea?
+@Preview(showBackground = true)
 @Composable
-fun FullScreen() {
+fun GreetingPreview(
+    @PreviewParameter(WindowWidthSizePreviewParameterProvider::class) windowWidth: WindowWidthSizeClassPreview,
+) {
     LetsComposeTheme {
-        // A surface container using the 'background' color from the theme
-        // this also makes it so the preview shows the entire screen.
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            // Full Conversation
-            Conversation(messages = SampleData.conversionSample)
-            //MessageCard(Message("Leo", "Hey, take a look at Jetpack Compose, it's great!"))
-        }
+        LetsComposeApp(
+            windowSize = windowWidth.value
+        )
     }
 }
-
-//endregion ================================Layout Building======================================//
-//region ================================PREVIEWS======================================//
-// Good to know that you are able to have multiple previews in compose.
-// Also good to know that you can have multiple Previews on one Preview Composable.
-
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Composable
-fun GreetingPreviewScreen() {
-    FullScreen()
-}
-
-@Preview(name = "Light Message", showBackground = true)
-@Preview(name = "Dark Message", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Composable
-fun MessageCardPreview() {
-    LetsComposeTheme {
-        Surface {
-            MessageCard(message = SampleData.messageSample)
-        }
-    }
-}
-
-@Preview(name = "Light Conversation", showBackground = true)
-@Preview(
-    name = "Dark Conversation",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-fun ConversionPreview() {
-    LetsComposeTheme {
-        Conversation(messages = SampleData.conversionSample)
-    }
-}
-//endregion ================================PREVIEWS======================================//
