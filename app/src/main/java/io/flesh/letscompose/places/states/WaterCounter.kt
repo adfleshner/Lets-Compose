@@ -66,7 +66,7 @@ private fun StatelessWaterCounter(
     checked: Boolean,
     onIncrement: () -> Unit,
     onClear: () -> Unit,
-    onCheckChanged : (Boolean) -> Unit,
+    onCheckChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showTask by remember {
@@ -95,7 +95,8 @@ private fun StatelessWaterCounter(
                     taskName = wellnessTaskText,
                     checked = checked,
                     onClose = { showTask = false },
-                    onCheckChanged = onCheckChanged)
+                    onCheckChanged = onCheckChanged
+                )
             }
             Text(
                 text = glassesCount
